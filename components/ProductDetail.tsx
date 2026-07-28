@@ -101,11 +101,11 @@ export default function ProductDetail({ product, college }: { product: Product; 
 
         {/* buy box */}
         <div className="mt-7 space-y-3">
-          <div className="flex items-stretch gap-3">
+          <div className="flex flex-wrap items-stretch gap-3">
             <Stepper qty={qty} setQty={setQty} name={product.name} />
             <button
               onClick={() => addToCart(qty, size)}
-              className="flex-1 inline-flex items-center justify-center gap-2 h-12 px-5 rounded-full border-[1.5px] border-ink/85 bg-white text-[15px] text-ink transition-colors duration-200 hover:bg-ink hover:text-white"
+              className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 h-12 px-5 rounded-full border-[1.5px] border-ink/85 bg-white text-[15px] text-ink transition-colors duration-200 hover:bg-ink hover:text-white"
             >
               {added ? <Check className="w-[18px] h-[18px]" /> : <ShoppingBag className="w-[18px] h-[18px]" />}
               {added ? "Added to bag" : "Add to cart"}

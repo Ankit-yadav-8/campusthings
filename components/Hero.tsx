@@ -24,8 +24,8 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const SLOTS = [
   {
     caption: "ROORKEE / 01",
-    img: "/mockups/roorkee-01.png",
-    alt: "IIT Roorkee navy tee, front and back",
+    img: "/mockups/roorkee-01-front-v2.png",
+    alt: "IIT Roorkee navy tee, front",
     box: "right-0 top-0 w-[57%] z-10",
     tilt: 2.6,
     depth: 14,
@@ -42,8 +42,8 @@ const SLOTS = [
   },
   {
     caption: "ROORKEE / 03",
-    img: "/mockups/roorkee-03.png",
-    alt: "IIT Roorkee tee, front and back detail",
+    img: "/mockups/roorkee-03-front-v2.png",
+    alt: "IIT Roorkee tee, front detail",
     box: "right-[5%] bottom-0 w-[47%] z-20",
     tilt: 1.4,
     depth: 24,

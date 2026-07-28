@@ -363,10 +363,30 @@ export function allProducts(): Product[] {
             reviews: 156,
             bestseller: true,
             fabric: "180 GSM combed cotton",
-            hideFromAll: true,
             photo: {
-              front: "/mockups/roorkee-01.png",
-              back: "/mockups/roorkee-03.png",
+              front: "/mockups/roorkee-01-front-v2.png",
+              back: "/mockups/roorkee-01-back-v2.png",
+            },
+          });
+
+          // 2nd Design: Eagle Edition
+          out.push({
+            id: `iit-roorkee-design-tshirt-eagle`,
+            collegeId: "iit-roorkee",
+            section: "design-tshirt",
+            kind: "tee",
+            name: "IIT Roorkee - Eagle Edition Tshirt",
+            price: price,
+            mrp: mrp,
+            garment: "#1b2133",
+            print: "#ffffff",
+            rating: 4.8,
+            reviews: 112,
+            bestseller: false,
+            fabric: "180 GSM combed cotton",
+            photo: {
+              front: "/mockups/roorkee-03-front-v2.png",
+              back: "/mockups/roorkee-03-back-v2.png",
             },
           });
         }
