@@ -364,6 +364,10 @@ export function allProducts(): Product[] {
             bestseller: true,
             fabric: "180 GSM combed cotton",
             hideFromAll: true,
+            photo: {
+              front: "/mockups/roorkee-01.png",
+              back: "/mockups/roorkee-03.png",
+            },
           });
         }
       });
