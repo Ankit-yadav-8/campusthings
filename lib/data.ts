@@ -315,17 +315,18 @@ export function allProducts(): Product[] {
         
         // Use template colors for procedural generation, but override if photographed
         // For black design tees, we use the specific crest color if available.
+        // Simple tshirts always keep their original black/white garment colors.
         let garment = tpl.garment;
         let print = tpl.print;
-        if (photo && PHOTOGRAPHED[c.id]) {
-           garment = PHOTOGRAPHED[c.id].garment;
-           print = PHOTOGRAPHED[c.id].print;
-        } else if (garment === "#14151a" && sec === "design-tshirt" && PHOTOGRAPHED[c.id]) {
-           // If it's a black design tee (even unphotographed), use the college's known crest print color
-           print = PHOTOGRAPHED[c.id].print;
-        } else if (garment === "#ffffff" && sec === "design-tshirt") {
-           // White design tees should use a tinted crest
-           print = hsl(c.hue, 60, 42);
+        if (sec === "design-tshirt") {
+          if (photo && PHOTOGRAPHED[c.id]) {
+             garment = PHOTOGRAPHED[c.id].garment;
+             print = PHOTOGRAPHED[c.id].print;
+          } else if (garment === "#14151a" && PHOTOGRAPHED[c.id]) {
+             print = PHOTOGRAPHED[c.id].print;
+          } else if (garment === "#ffffff") {
+             print = hsl(c.hue, 60, 42);
+          }
         }
         out.push({
           id: key,
