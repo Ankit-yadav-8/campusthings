@@ -1,26 +1,579 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ *
+ *  Campus Things — boutique design system
+ *  White ground · Prata serif display · violet accent
+ * ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --page: #ffffff;         /* page ground — flat white, no tint, no grain */
+  --bg: #ffffff;           /* cards / nav / surfaces */
+  /* Card and band fills. Neutral greys now rather than warm cream — on a
+     white ground the cream read as a stain, but dropping these to pure
+     white would erase the separation cards get from their fill. */
+  --bg-soft: #f7f7f7;      /* alternate sections */
+  --bg-tint: #ededed;
+  --ink: #191510;          /* warm near-black — primary text & CTA */
+  --ink-soft: #574f45;
+  --muted: #8a8a8a;
+  --line: #e4e4e4;
+  --line-strong: #cfcfcf;
+
+  /* black takes the role the maroon had in the reference */
+  --brand: #211d18;
+  --brand-600: #000000;
+  --brand-50: #f2ece1;
+
+  /* restrained boutique gold for thin eyebrows & dividers */
+  --gold: #a98b5d;
+  --gold-soft: #f2ebdc;
+
+  /* The bestsellers band and its product tiles, both flat white. The tiles
+     used to sit a few percent darker so they read as surfaces; now that
+     every product photo is keyed to transparency, the garment carries
+     itself and the tile is only there to set the aspect ratio. */
+  --smoke: #ffffff;
+  --smoke-tile: #ffffff;
+
+
+  /* Campus Things logo "vibe" palette — used ONLY in the logo mark */
+  --teal: #14bd97;
+  --teal-soft: #e6faf4;
+  --sky: #37a8ef;
+  --sky-soft: #e8f4fe;
+  /* The accent fill. Violet rather than the old vermilion, so chips, dots
+     and icon tiles sit in the same family as the headline type and the
+     primary buttons. Pitched light enough that --ink text on it still
+     clears 4.6:1 — chip labels are 12px and need the AA ratio. */
+  --coral: #8577b8;
+  /* The accent colour for headline words and their underline rule.
+     #f5f3ff sat at 1.1:1 on white — the accent words were invisible. This
+     is the same violet family taken down to 5.6:1, which clears WCAG AA
+     for body text, not just large display type. */
+  --coral-strong: #6d5da1;
+  --coral-soft: #f0edf9;   /* pale violet wash for hover fills and tints */
+
+  /* Every hard offset shadow reads from this one token. Light warm sand:
+     the offset becomes a soft echo rather than a slab, and the crisp ink
+     border carries the shape instead. Neutral on purpose — it has to stay
+     legible under white cards, cream panels AND coral buttons alike. */
+  --shadow: #c4ad83;
+
+  --accent: var(--gold);
+  --accent-soft: var(--gold-soft);
+
+  /* One source of truth for the navbar row: the inline wordmark's font-size
+     is also the nav links' height, so the logo and the links always cap out
+     at the same measure. Change it here and the whole bar moves together. */
+  --logo-inline-size: 2.15rem;
+
+  /* The sticky header's resting height. Anything that has to clear the bar —
+     the scroll offset for in-page anchors, the college store's own sticky
+     filter row — reads it from here rather than hard-coding a number that
+     drifts the moment the bar changes. */
+  --nav-h: 68px;
+
+  /* One easing curve and two durations for the whole site, so a hover, a
+     reveal and a panel all decelerate the same way. Motion that agrees with
+     itself is most of what reads as "smooth". */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 180ms;
+  --t-base: 280ms;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-page: var(--page);
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-bg-tint: var(--bg-tint);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-brand: var(--brand);
+  --color-brand-600: var(--brand-600);
+  --color-brand-50: var(--brand-50);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-smoke: var(--smoke);
+  --color-smoke-tile: var(--smoke-tile);
+  --color-teal: var(--teal);
+  --color-teal-soft: var(--teal-soft);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-coral: var(--coral);
+  --color-coral-strong: var(--coral-strong);
+  --color-coral-soft: var(--coral-soft);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-montserrat);
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-script: var(--font-great-vibes), cursive;
+
+  --radius-xl2: 1.5rem;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-wiggle: wiggle 2.6s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 20s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+* { border-color: var(--color-line); }
+
+/* `scroll-padding-top` is what stops a jump to #hoodie from parking the
+   heading underneath the sticky bar — smooth scrolling to the wrong place
+   is worse than not scrolling smoothly at all. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 1.5rem);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* A stray few pixels of horizontal scroll is the most common way a page
+   stops feeling settled on a phone. The hero's tilted card stack and the
+   marquee both overhang deliberately; this keeps the overhang from turning
+   into a sideways rubber-band on the whole document. */
+body { overflow-x: clip; }
+
+/* The paper-grain turbulence that used to sit here went with the cream —
+   noise over flat white reads as a dirty screen, not as paper. */
+body {
+  background-color: var(--page);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: color-mix(in srgb, var(--gold) 30%, transparent); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #d9cebd; border-radius: 999px; border: 3px solid var(--page); }
+::-webkit-scrollbar-thumb:hover { background: #c8bca6; }
+
+/* typography --------------------------------------------------------- *
+ *  Display face is a geometric sans run heavy. It has no stroke contrast
+ *  to do the work, so scale, weight and tight tracking carry it — which
+ *  also means it holds up small, unlike the serif it replaced.
+ * ------------------------------------------------------------------- */
+.font-display {
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  font-weight: 800;
+}
+
+h1, h2, h3, h4 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* size-linked tracking — big type gets tighter, small type gets air */
+.track-display { letter-spacing: -0.02em; }
+.track-title   { letter-spacing: -0.012em; }
+
+/* fluid display scale */
+.text-hero  { font-size: clamp(2.75rem, 7.2vw, 5.5rem);  line-height: 0.94; }
+.text-title { font-size: clamp(1.9rem, 3.6vw, 3rem);     line-height: 1.06; }
+
+/* the masthead — sans, heavy, tight, wrapped by hand not by balance.
+   Montserrat runs a tall x-height with long ascenders, so 0.9 leading
+   collides line to line where the serif could take it — 0.96 is the
+   floor that still reads as a stacked block. Tracking goes tighter to
+   compensate for the wider geometric letterforms. */
+.text-editorial {
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  font-size: clamp(2.7rem, 6.1vw, 5.4rem);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.032em;
+  text-wrap: normal;
+}
+
+/* ------------------------------------------------------------------ *
+ *  Hero type — Prata masthead over Inter Light copy.
+ *
+ *  Scoped to the hero rather than pushed through the whole type system,
+ *  so the rest of the site keeps its Montserrat/Plus Jakarta pairing
+ *  until you decide to roll this out further.
+ * ------------------------------------------------------------------ */
+
+/* Prata ships one weight (400). Asking for 900 the way .text-editorial
+   does would get a synthesised faux-bold, which smears the thin strokes
+   that make the face look sharp in the first place — so the size does the
+   work and the weight stays where it is. */
+.hero-heading {
+  font-family: var(--font-prata), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 5.8vw, 5.1rem);
+  /* a high-contrast serif needs more leading than the geometric sans it
+     replaced — 0.9 had the descenders sitting in the next line's caps */
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+  text-wrap: normal;
+}
+
+/* Inter at Light — the hero copy and every section lede under a Prata
+   heading. The tracking bump is deliberate: Inter is drawn tight for UI and
+   reads cramped at 300 once it's set as running copy. */
+.body-light {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.004em;
+}
+
+/* the accent line: coral, with a hairline rule riding just under it */
+/* The accent rule. A real text-decoration rather than a drawn line, purely
+   so `skip-ink` punches a clean gap where the 'p' descender passes through
+   — at line-height .9 there is no room to clear the descender by sitting
+   lower, the next line's ascenders are already there. */
+.accent-rule {
+  text-decoration-line: underline;
+  text-decoration-color: var(--coral-strong);
+  text-decoration-thickness: 0.036em;
+  text-underline-offset: 0.13em;
+  text-decoration-skip-ink: auto;
+}
+/* on ink panels the accent violet goes muddy — lift it instead */
+.accent-rule-light { text-decoration-color: #b3a5e0; }
+
+/* uppercase mono micro-label: chapter marks, tags, coordinates */
+.label {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+.label-sm { font-size: 9.5px; letter-spacing: 0.2em; }
+
+/* the inline wordmark — leading-none so the box height *is* the font size,
+   which is what the nav links match themselves against */
+.wordmark-inline {
+  font-size: var(--logo-inline-size);
+  line-height: 1;
+}
+
+/* primary nav links. Montserrat rather than the body sans: the nav sits
+   directly under the masthead voice, and Plus Jakarta at 14px read as UI
+   chrome next to the script wordmark. Height is locked to the wordmark so
+   the two align optically. Kept light — the weight is what makes the row
+   read as quiet type rather than a strip of buttons. */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  height: var(--logo-inline-size);
+  padding-inline: 1.15rem;
+  border-radius: 999px;
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  font-size: 15.5px;
+  font-weight: 300;
+  letter-spacing: -0.004em;
+  line-height: 1;
+  color: var(--ink-soft);
+  transition: color .2s ease, background-color .2s ease;
+}
+/* no pill, no fill — hover just deepens the type from ink-soft to full ink */
+.nav-link:hover { color: var(--ink); }
+
+/* square sibling of .nav-link for icon-only controls, same height and the
+   same colour-only hover */
+.nav-icon {
+  display: inline-grid;
+  place-items: center;
+  width: var(--logo-inline-size);
+  height: var(--logo-inline-size);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  transition: color .2s ease;
+}
+.nav-icon:hover { color: var(--ink); }
+/* the current route only steps up to regular — going bold here would undo
+   the light setting the rest of the row is doing */
+.nav-link[aria-current="page"] { color: var(--ink); font-weight: 500; }
+
+.vertical-rl { writing-mode: vertical-rl; }
+
+.container-x { width: 100%; max-width: 1240px; margin-inline: auto; padding-inline: 1.25rem; }
+
+.glass {
+  background: color-mix(in srgb, #ffffff 82%, transparent);
+  backdrop-filter: saturate(160%) blur(12px);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+}
+
+/* Elevation is gone from the card system. These two remain as no-ops so
+   nothing that still references them starts throwing a lint error, and so
+   the flattening can't be silently undone by one stray class. */
+.card-shadow,
+.card-shadow-lg { box-shadow: none; }
+
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* The hard offset shadow the site used to be built on. Retired: surfaces
+   are flat now, and separation comes from a hairline and the fill.
+   Kept as no-ops rather than deleted so the many call sites don't all have
+   to be edited in lockstep — and so a control that used the offset as its
+   *pressed* state still gets a state, just a tonal one instead. */
+.shadow-hard,
+.shadow-hard-sm { box-shadow: none; }
+.shadow-hard-hover { transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+.shadow-hard-hover:hover { background-color: color-mix(in srgb, var(--ink) 5%, transparent); }
+
+/* ------------------------------------------------------------------ *
+ *  Component layer — the hero's vocabulary, factored out so every page
+ *  speaks it: hard ink edges, light offset shadows (--shadow), coral as
+ *  the accent. Pressing a control moves it into its own shadow.
+ * ------------------------------------------------------------------ */
+
+/* headings ---------------------------------------------------------- */
+/* same voice as the masthead, one step down in scale */
+/* section headings speak in the hero's voice, one step down in scale —
+   Prata at its single 400 weight, never faux-bolded */
+.h-section {
+  font-family: var(--font-prata), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.16;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+}
+.h-card {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+/* surfaces ---------------------------------------------------------- */
+/* Flat card. A hairline and the fill do all the separating — no ink slab,
+   no offset shadow. The 2px border and the hard shadow were a matched pair:
+   drop the shadow but keep the border and the card reads as an outline box,
+   which is heavier than either. So both go, together. */
+.card-brut {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: none;
+}
+.card-brut-sm {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: none;
+}
+/* hover deepens the hairline instead of growing an offset */
+.card-lift { transition: border-color .22s ease, transform .22s ease; }
+.card-lift:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+
+/* buttons ----------------------------------------------------------- */
+/* Pill, mono-uppercase label, offset shadow it presses into. Hover slides
+   the button halfway down the offset, :active seats it flush — the control
+   physically travels into its own shadow rather than just tinting. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  height: 3.25rem;
+  padding-inline: 1.6rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  line-height: 1;
+  color: var(--ink);
+  background: transparent;
+  transition: transform .18s ease, box-shadow .18s ease, background .25s ease, color .25s ease;
+}
+.btn:hover  { background: var(--ink); color: var(--page); }
+.btn:active { transform: translate(1px, 1px); }
+
+/* One layer: the fill. No ring, no border, no offset — the leaf shape and
+   the colour carry it on their own. */
+/* Carries the same violet the hero headline is set in (--coral-strong),
+   so the primary CTA and the accent type read as one colour rather than
+   the button sitting in a leftover orange. */
+.btn-accent {
+  border-radius: 999px 0 999px 0;
+  padding-inline: 1.8rem;
+  border-color: transparent;
+  background: linear-gradient(100deg, #5b4c8c 0%, var(--coral-strong) 100%);
+  color: #fff;
+  box-shadow: none;
+}
+/* deepens rather than lightens — hover should read as pressure on the
+   control, and lighter stops make it recede instead */
+.btn-accent:hover  { background: linear-gradient(100deg, #4a3d73 0%, #5c4d8e 100%); color: #fff; }
+.btn-accent:active { transform: translate(1px, 1px); }
+
+/* the dark CTA lifts into the violet accent on hover */
+.btn-ink { background: var(--ink); color: #fff; }
+.btn-ink:hover { background: linear-gradient(100deg, var(--coral) 0%, var(--coral-strong) 55%, #4a3d73 100%); color: #fff; }
+
+/* The plain outlined button. The shop's "Filters" and "Load more" have been
+   asking for this class all along — without it they fell back to the bare
+   .btn and lost their fill, so they read as floating text on the page. */
+.btn-white {
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: none;
+}
+.btn-white:hover { background: var(--ink); color: var(--page); }
+
+.btn-sm {
+  height: 2.5rem; padding-inline: 1.2rem; font-size: 10.5px; letter-spacing: .16em;
+  border-width: 1.6px; border-radius: 999px; box-shadow: none;
+}
+.btn-sm:active { transform: translate(1px, 1px); }
+.btn-block { width: 100%; }
+.btn:disabled { opacity: .5; pointer-events: none; }
+
+/* chips & tags ------------------------------------------------------ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  padding: .28rem .7rem;
+  border: 1.6px solid var(--ink);
+  border-radius: 999px;
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.chip-accent { background: var(--coral); color: var(--ink); }
+.chip-ink    { background: var(--ink); color: #fff; }
+.chip-sq     { border-radius: 6px; }
+
+/* form fields ------------------------------------------------------- *
+ *  Inside @layer components on purpose. Unlayered rules outrank anything
+ *  in Tailwind's utilities layer, so a bare `.field` beat `pl-12` on the
+ *  college search box and the placeholder ran under the magnifier icon.
+ *  Layered, the utility wins and per-instance padding works again.
+ * ------------------------------------------------------------------- */
+@layer components {
+  .field {
+    width: 100%;
+    height: 3rem;
+    padding-inline: .9rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--bg);
+    font-size: 15px;
+    color: var(--ink);
+    transition: border-color .18s ease;
+  }
+  .field::placeholder { color: var(--muted); }
+  /* no `outline: none` here — the global :focus-visible ring must survive
+     for keyboard users; the darkened border is the mouse-focus affordance
+     now that the offset shadow is gone */
+  .field:focus { border-color: var(--ink); }
+  textarea.field { height: auto; padding-block: .75rem; }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* fades a horizontally scrolling strip out at both edges */
+.mask-edges {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+/* editorial surface treatments -------------------------------------- */
+
+/* faint vertical column guides, like a print grid */
+.column-rules {
+  background-image: linear-gradient(90deg, var(--line-strong) 1px, transparent 1px);
+  background-size: 25% 100%;
+  opacity: 0.4;
+}
+
+/* Photo-print card. The hero stacks three of these overlapping on white,
+   so they still need *some* edge or they merge into one shape — but that
+   edge is now a hairline ring rather than a drop shadow. */
+.photo-shadow,
+.photo-shadow-sm { box-shadow: 0 0 0 1px var(--line); }
+
+/* faint blueprint grid used behind the hero */
+.dot-grid {
+  background-image: radial-gradient(circle at 1px 1px, var(--line-strong) 1px, transparent 0);
+  background-size: 26px 26px;
+}
+
+/* soft ambient colour wash */
+.aurora {
+  background:
+    radial-gradient(38rem 26rem at 12% 8%, color-mix(in srgb, var(--coral) 22%, transparent), transparent 62%),
+    radial-gradient(34rem 24rem at 88% 4%, color-mix(in srgb, var(--sky) 16%, transparent), transparent 60%),
+    radial-gradient(30rem 22rem at 62% 82%, color-mix(in srgb, var(--teal) 14%, transparent), transparent 60%);
+}
+
+/* live status dot */
+.live-dot { position: relative; }
+.live-dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: 999px;
+  background: inherit; animation: ping 1.9s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping {
+  0%   { transform: scale(1);   opacity: .65; }
+  75%  { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Focus ring consistent with the ink palette. In @layer base so a component
+   can opt out with a plain `outline-none` utility — unlayered it outranked
+   every utility regardless of specificity, and the :where() zero-specificity
+   trick did nothing to help. */
+@layer base {
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Images carry their own aspect box everywhere they're used, so this is
+   purely about how they arrive: decoded off the main thread, and never
+   stretched while a container is still settling. */
+img { max-width: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* transitions too, not just keyframes — the hover flips, the drawer and
+     the reveals are all transition-driven, and leaving them running was the
+     whole point of the preference */
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  html { scroll-behavior: auto !important; }
 }
