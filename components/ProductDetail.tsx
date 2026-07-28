@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
 import {
   Star, ShoppingBag, Check,
   Ruler, Heart, Plus
@@ -15,84 +14,45 @@ import {
   inr, tint, SIZES, CAP_SIZES, type Product, type College,
 } from "@/lib/data";
 
-const VIEWS: { label: string; face: GarmentFace; zoom?: boolean }[] = [
-  { label: "Front", face: "front" },
-  { label: "Back", face: "back" },
-  { label: "Detail", face: "back", zoom: true },
-];
+
 
 export default function ProductDetail({ product, college }: { product: Product; college: College }) {
   const { added, addToCart, buyNow } = useAddToCart(product);
   const sizes = product.kind === "cap" ? CAP_SIZES : SIZES;
   const [size, setSize] = useState<string>(product.kind === "cap" ? "Free Size" : "M");
   const [qty, setQty] = useState(1);
-  const [view, setView] = useState(1);
   const [wish, setWish] = useState(false);
 
   const discount = Math.round((1 - product.price / product.mrp) * 100);
 
   return (
-    <div className="grid lg:grid-cols-2 gap-10 lg:gap-14">
+    <div className="grid lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_420px] gap-8 lg:gap-12 xl:gap-16 items-start">
       {/* gallery */}
-      <div className="lg:sticky lg:top-28 self-start max-w-[480px] w-full mx-auto lg:mr-0">
-        <div
-          className="relative card-brut rounded-[22px] overflow-hidden aspect-square grid place-items-center p-8"
-          style={{ background: `linear-gradient(160deg, ${tint(college.hue, 96)}, #fff)` }}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 relative">
+        <button
+          onClick={() => setWish((w) => !w)}
+          className="absolute z-10 top-4 right-4 sm:top-6 sm:right-6 grid place-items-center w-11 h-11 rounded-full bg-white/90 text-ink shadow-sm transition-colors hover:bg-white"
+          aria-label="Wishlist"
         >
-          <button
-            onClick={() => setWish((w) => !w)}
-            className="absolute z-10 top-4 right-4 grid place-items-center w-10 h-10 rounded-full bg-white/90 text-ink transition-colors hover:bg-white"
-            aria-label="Wishlist"
-          >
-            <Heart className={`w-5 h-5 ${wish ? "fill-coral text-coral" : "text-ink"}`} />
-          </button>
+          <Heart className={`w-5 h-5 ${wish ? "fill-coral text-coral" : "text-ink"}`} />
+        </button>
 
-          <div className="relative w-[82%] h-[82%]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={view}
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.99 }}
-                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0"
-              >
-                <Face
-                  product={product}
-                  college={college}
-                  face={VIEWS[view].face}
-                  zoom={VIEWS[view].zoom}
-                  sizes="(max-width: 1024px) 90vw, 45vw"
-                  preload
-                />
-              </motion.div>
-            </AnimatePresence>
+        <div
+          className="relative overflow-hidden aspect-[4/5] sm:aspect-square grid place-items-center"
+          style={{ background: tint(college.hue, 97) }}
+        >
+          <div className="relative w-[90%] h-[90%]">
+            <Face product={product} college={college} face="front" sizes="(max-width: 640px) 100vw, 50vw" preload />
           </div>
         </div>
 
-        <div className="mt-4 flex gap-3">
-          {VIEWS.map((v, i) => (
-            <button
-              key={v.label}
-              onClick={() => setView(i)}
-              aria-pressed={view === i}
-              className={`flex-1 rounded-xl p-3 transition-all ${
-                view === i ? "ring-1 ring-ink" : "opacity-60 hover:opacity-100"
-              }`}
-              style={{ background: tint(college.hue, 97) }}
-            >
-              <span className="relative block w-full aspect-square">
-                <Face
-                  product={product}
-                  college={college}
-                  face={v.face}
-                  zoom={v.zoom}
-                  sizes="100px"
-                />
-              </span>
-              <span className="mt-1 block label label-sm text-muted">{v.label}</span>
-            </button>
-          ))}
+        <div
+          className="relative overflow-hidden aspect-[4/5] sm:aspect-square grid place-items-center"
+          style={{ background: tint(college.hue, 97) }}
+        >
+          <div className="relative w-[90%] h-[90%]">
+            <Face product={product} college={college} face="back" sizes="(max-width: 640px) 100vw, 50vw" preload />
+          </div>
         </div>
       </div>
 
