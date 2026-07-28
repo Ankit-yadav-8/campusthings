@@ -28,6 +28,7 @@ export default function ShopBrowser({
     const q = query?.trim().toLowerCase() ?? "";
     let out = products.filter((p) => {
       if (cat !== "all" && p.section !== cat) return false;
+      if (cat === "all" && p.hideFromAll) return false;
       if (p.price < lo || p.price > hi) return false;
       if (q) {
         const college = getCollege(p.collegeId);

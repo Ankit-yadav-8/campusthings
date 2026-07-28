@@ -54,6 +54,7 @@ export interface Product {
   fabric: string;
   /** real product photography; absent products fall back to the SVG mockup */
   photo?: Photo;
+  hideFromAll?: boolean;
 }
 
 /** The two faces of a photographed garment, both keyed to transparency. */
@@ -345,6 +346,26 @@ export function allProducts(): Product[] {
           fabric: tpl.fabric,
           ...(photo ? { photo } : {}),
         });
+
+        // Add special Navy Edition tee ONLY for IIT Roorkee
+        if (c.id === "iit-roorkee" && sec === "design-tshirt") {
+          out.push({
+            id: `iit-roorkee-design-tshirt-navy`,
+            collegeId: "iit-roorkee",
+            section: "design-tshirt",
+            kind: "tee",
+            name: "IIT Roorkee - Navy Edition Tshirt",
+            price: price,
+            mrp: mrp,
+            garment: "#1b2133", // Navy blue
+            print: "#f1e5c4",   // Gold/yellow tint
+            rating: 4.9,
+            reviews: 156,
+            bestseller: true,
+            fabric: "180 GSM combed cotton",
+            hideFromAll: true,
+          });
+        }
       });
     });
   }
