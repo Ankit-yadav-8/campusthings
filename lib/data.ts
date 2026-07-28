@@ -492,8 +492,8 @@ export function relatedProducts(p: Product, n = 4) {
  */
 export function shopOrder(): Product[] {
   const ORDER = [
-    "iit-roorkee", "iit-bombay", "iit-delhi", "iit-madras",
-    "iit-kanpur", "iit-guwahati", "iit-bhu-varanasi", "iit-kharagpur",
+    "iit-roorkee", "iit-bombay", "iit-delhi", "iit-kanpur",
+    "iit-madras", "iit-guwahati", "iit-bhu-varanasi", "iit-kharagpur",
   ];
   const all = allProducts();
   const out: Product[] = [];

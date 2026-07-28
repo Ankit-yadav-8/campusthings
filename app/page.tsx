@@ -37,8 +37,8 @@ export default function Home() {
 
           <div className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10 items-stretch">
             {[
-              "iit-roorkee", "iit-bombay", "iit-delhi", "iit-madras",
-              "iit-kanpur", "iit-guwahati", "iit-bhu-varanasi", "iit-kharagpur",
+              "iit-roorkee", "iit-bombay", "iit-delhi", "iit-kanpur",
+              "iit-madras", "iit-guwahati", "iit-bhu-varanasi", "iit-kharagpur",
             ].map((cid) => all.find((p) => p.collegeId === cid && p.section === "design-tshirt"))
              .filter(Boolean)
              .map((p, i) => (
