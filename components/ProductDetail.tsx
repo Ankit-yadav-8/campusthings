@@ -26,9 +26,9 @@ export default function ProductDetail({ product, college }: { product: Product; 
   const discount = Math.round((1 - product.price / product.mrp) * 100);
 
   return (
-    <div className="grid lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_420px] gap-8 lg:gap-12 xl:gap-16 items-start">
+    <div className="grid lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_420px] gap-8 lg:gap-12 xl:gap-16 items-stretch">
       {/* gallery */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 relative">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 relative h-full">
         <button
           onClick={() => setWish((w) => !w)}
           className="absolute z-10 top-4 right-4 sm:top-6 sm:right-6 grid place-items-center w-11 h-11 rounded-full bg-white/90 text-ink shadow-sm transition-colors hover:bg-white"
@@ -38,7 +38,7 @@ export default function ProductDetail({ product, college }: { product: Product; 
         </button>
 
         <div
-          className="relative overflow-hidden aspect-[4/5] sm:aspect-square grid place-items-center"
+          className="relative overflow-hidden h-full min-h-[400px] grid place-items-center"
           style={{ background: tint(college.hue, 97) }}
         >
           <div className="relative w-[90%] h-[90%]">
@@ -47,7 +47,7 @@ export default function ProductDetail({ product, college }: { product: Product; 
         </div>
 
         <div
-          className="relative overflow-hidden aspect-[4/5] sm:aspect-square grid place-items-center"
+          className="relative overflow-hidden h-full min-h-[400px] grid place-items-center"
           style={{ background: tint(college.hue, 97) }}
         >
           <div className="relative w-[90%] h-[90%]">
