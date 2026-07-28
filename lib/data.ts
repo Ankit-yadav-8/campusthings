@@ -270,7 +270,6 @@ interface Tpl { suffix: string; add: number; fabric: string; garment: string; pr
 const TEMPLATES: Record<SectionId, Tpl[]> = {
   "design-tshirt": [
     { suffix: "Premium Black Tshirt", add: 0, fabric: "180 GSM combed cotton", garment: "#14151a", print: "#ffffff" },
-    { suffix: "Premium White Tshirt", add: 0, fabric: "180 GSM combed cotton", garment: "#ffffff", print: "#14151a" },
   ],
   "simple-tshirt": [
     { suffix: "Simple Black Tshirt", add: -100, fabric: "180 GSM combed cotton", garment: "#14151a", print: "#ffffff" },

@@ -17,7 +17,7 @@ const PAGE = 12;
 export default function ShopBrowser({
   initialCat, query,
 }: { initialCat?: SectionId; query?: string }) {
-  const products = useMemo(() => shopOrder(), []);
+  const products = useMemo(() => shopOrder().filter((p) => p.photo), []);
   const [cat, setCat] = useState<SectionId | "all">(initialCat ?? "all");
   const [min, setMin] = useState("");
   const [max, setMax] = useState("");
@@ -126,7 +126,7 @@ export default function ShopBrowser({
             <button onClick={reset} className="mt-6 btn btn-sm btn-accent">Reset filters</button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 items-stretch">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 items-stretch">
             {shown.map((p, i) => <BuyBoxCard key={p.id} product={p} index={i} />)}
           </div>
         )}
