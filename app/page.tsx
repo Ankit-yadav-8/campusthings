@@ -69,15 +69,13 @@ export default function Home() {
             {[
               "iit-roorkee",
               "iit-madras",
-              "iit-bombay",
               "iit-kharagpur",
               "iit-guwahati",
-              "iit-kanpur"
             ].flatMap((c) => {
               const whiteTee = all.find((p) => p.collegeId === c && p.section === "simple-tshirt" && p.garment === "#ffffff");
               const blackTee = all.find((p) => p.collegeId === c && p.section === "simple-tshirt" && p.garment === "#14151a");
-              return [whiteTee, blackTee].filter(Boolean);
-            }).slice(0, 12).map((p, i) => (
+              return [blackTee, whiteTee].filter(Boolean);
+            }).map((p, i) => (
               <BuyBoxCard key={p!.id} product={p as Product} index={i} />
             ))}
           </div>
