@@ -3,7 +3,7 @@ import { ArrowRight, Recycle } from "lucide-react";
 import Hero from "@/components/Hero";
 import BuyBoxCard from "@/components/BuyBoxCard";
 import Reveal from "@/components/Reveal";
-import { allProducts, tshirtShelf, type Product } from "@/lib/data";
+import { allProducts, type Product } from "@/lib/data";
 
 export default function Home() {
   // Three prints for the hero stack to link through to. The store is tees
@@ -15,8 +15,6 @@ export default function Home() {
     all.find((p) => p.garment === "#ffffff"),
     all.find((p) => p.garment === "#f4efe6"),
   ].filter((p): p is Product => Boolean(p));
-  // the shelf runs four to a row, so keep this a multiple of four
-  const tees = tshirtShelf(8);
 
   return (
     <>
@@ -38,8 +36,13 @@ export default function Home() {
           </Reveal>
 
           <div className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10 items-stretch">
-            {tees.map((p, i) => (
-              <BuyBoxCard key={p.id} product={p} index={i} />
+            {[
+              "iit-roorkee", "iit-bombay", "iit-delhi", "iit-madras",
+              "iit-kanpur", "iit-guwahati", "iit-bhu-varanasi", "iit-kharagpur",
+            ].map((cid) => all.find((p) => p.collegeId === cid && p.section === "design-tshirt"))
+             .filter(Boolean)
+             .map((p, i) => (
+              <BuyBoxCard key={p!.id} product={p as Product} index={i} />
             ))}
           </div>
 

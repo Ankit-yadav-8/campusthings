@@ -290,9 +290,12 @@ let _cache: Product[] | null = null;
 
 export function allProducts(): Product[] {
   if (_cache) return _cache;
+  const HAS_SIMPLE_PHOTOS = ["iit-roorkee", "iit-madras", "iit-kharagpur", "iit-guwahati"];
   const out: Product[] = [];
   for (const c of COLLEGES) {
     ALL_SECTIONS.forEach((sec) => {
+      // Only generate simple tshirts for colleges that have photos
+      if (sec === "simple-tshirt" && !HAS_SIMPLE_PHOTOS.includes(c.id)) return;
       TEMPLATES[sec].forEach((tpl, ti) => {
         const base = SECTIONS.find((s) => s.id === sec)!.from + tpl.add;
         const key = `${c.id}-${sec}-${ti}`;
@@ -303,7 +306,6 @@ export function allProducts(): Product[] {
         let photo = key === photoProductId(c.id) ? photoFor(c.id) : undefined;
         
         if (sec === "simple-tshirt") {
-          const HAS_SIMPLE_PHOTOS = ["iit-guwahati", "iit-kharagpur", "iit-madras", "iit-roorkee", "iit-bombay"];
           if (HAS_SIMPLE_PHOTOS.includes(c.id)) {
             const colorName = tpl.garment === "#ffffff" ? "white" : "black";
             photo = {
@@ -482,6 +484,33 @@ export function relatedProducts(p: Product, n = 4) {
   return allProducts()
     .filter((x) => x.collegeId === p.collegeId && x.id !== p.id)
     .slice(0, n);
+}
+
+/**
+ * Custom product ordering for the shop page.
+ * Groups by college in NIRF order; within each college:
+ * design tee first, then simple black, then simple white.
+ */
+export function shopOrder(): Product[] {
+  const ORDER = [
+    "iit-roorkee", "iit-bombay", "iit-delhi", "iit-madras",
+    "iit-kanpur", "iit-guwahati", "iit-bhu-varanasi", "iit-kharagpur",
+  ];
+  const all = allProducts();
+  const out: Product[] = [];
+  for (const cid of ORDER) {
+    const design = all.filter((p) => p.collegeId === cid && p.section === "design-tshirt");
+    const simpleBlack = all.find((p) => p.collegeId === cid && p.section === "simple-tshirt" && p.garment === "#14151a");
+    const simpleWhite = all.find((p) => p.collegeId === cid && p.section === "simple-tshirt" && p.garment === "#ffffff");
+    out.push(...design);
+    if (simpleBlack) out.push(simpleBlack);
+    if (simpleWhite) out.push(simpleWhite);
+  }
+  // append any remaining products not in the explicit order
+  for (const p of all) {
+    if (!out.includes(p)) out.push(p);
+  }
+  return out;
 }
 
 export const SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const;
