@@ -11,9 +11,9 @@ export default function Home() {
   // old picks asked for a hoodie and a lower, which no longer exist.
   const all = allProducts();
   const heroPicks = [
-    all.find((p) => p.photo),
-    all.find((p) => p.garment === "#ffffff"),
-    all.find((p) => p.garment === "#f4efe6"),
+    all.find((p) => p.collegeId === "iit-roorkee" && p.section === "design-tshirt"),
+    all.find((p) => p.collegeId === "iit-delhi" && p.section === "design-tshirt"),
+    all.find((p) => p.collegeId === "iit-roorkee" && p.section === "design-tshirt"),
   ].filter((p): p is Product => Boolean(p));
 
   return (
