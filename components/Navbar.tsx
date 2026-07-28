@@ -15,7 +15,6 @@ import Logo from "@/components/Logo";
 const LINKS: { href: string; label: string; icon: LucideIcon }[] = [
   { href: "/", label: "Home", icon: Home },
   { href: "/shop", label: "Shop", icon: LayoutGrid },
-  { href: "/colleges", label: "Colleges", icon: GraduationCap },
   { href: "/about", label: "About", icon: Info },
   { href: "/contact", label: "Contact", icon: Mail },
 ];

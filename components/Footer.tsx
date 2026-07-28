@@ -30,7 +30,6 @@ export default function Footer() {
             <h4 className="h-card text-sm uppercase tracking-wide">Quick Links</h4>
             <ul className="mt-4 flex flex-col gap-3 text-sm text-muted">
               <li><Link href="/" className="hover:text-ink transition-colors">Home</Link></li>
-              <li><Link href="/colleges" className="hover:text-ink transition-colors">Colleges</Link></li>
               <li><Link href="/about" className="hover:text-ink transition-colors">About us</Link></li>
               <li><Link href="/contact" className="hover:text-ink transition-colors">Contact</Link></li>
             </ul>

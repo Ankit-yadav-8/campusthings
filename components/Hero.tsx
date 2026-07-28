@@ -108,11 +108,6 @@ export default function Hero({ products }: { products: Product[] }) {
                 Start packing
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
-
-              <Link href="/colleges" className="btn group">
-                Explore catalog
-                <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
             </div>
 
           </motion.div>
