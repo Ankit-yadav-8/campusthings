@@ -1,8 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { SlidersHorizontal, X } from "lucide-react";
 import BuyBoxCard from "@/components/BuyBoxCard";
 import {
   shopOrder, SECTIONS, getCollege,
@@ -23,7 +21,6 @@ export default function ShopBrowser({
   const [max, setMax] = useState("");
   const [sort, setSort] = useState<SortKey>("featured");
   const [limit, setLimit] = useState(PAGE);
-  const [sheet, setSheet] = useState(false);
 
   const filtered = useMemo(() => {
     const lo = min ? parseInt(min) : 0;
@@ -55,65 +52,72 @@ export default function ShopBrowser({
   const shown = filtered.slice(0, limit);
   const reset = () => { setCat("all"); setMin(""); setMax(""); setLimit(PAGE); };
 
-  const Sidebar = (
-    <div className="space-y-8">
-      {SECTIONS.length > 1 && (
-        <div>
-          <h4 className="h-card text-lg mb-3">Categories</h4>
-          <ul className="space-y-1">
-            <CatItem active={cat === "all"} onClick={() => { setCat("all"); setLimit(PAGE); }}>All Products</CatItem>
-            {SECTIONS.map((s) => (
-              <CatItem key={s.id} active={cat === s.id} onClick={() => { setCat(s.id); setLimit(PAGE); }}>{s.name}</CatItem>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      <div>
-        <h4 className="h-card text-lg mb-3">Filter by</h4>
-        <p className="text-sm font-medium text-ink-soft mb-2">Price</p>
-        <div className="flex items-center gap-2">
-          <input value={min} onChange={(e) => { setMin(e.target.value.replace(/\D/g, "")); setLimit(PAGE); }} inputMode="numeric" placeholder="Min"
-            className="field h-10 text-sm" />
-          <span className="text-muted">–</span>
-          <input value={max} onChange={(e) => { setMax(e.target.value.replace(/\D/g, "")); setLimit(PAGE); }} inputMode="numeric" placeholder="Max"
-            className="field h-10 text-sm" />
-        </div>
-      </div>
-
-      <button onClick={reset} className="text-sm font-bold underline underline-offset-4 hover:text-coral transition-colors">Clear all filters</button>
-    </div>
-  );
-
   return (
-    <div className="grid lg:grid-cols-[220px_1fr] gap-8 lg:gap-12">
-      <aside className="hidden lg:block">
-        <div className="sticky top-28">{Sidebar}</div>
-      </aside>
-
+    <div className="flex flex-col gap-6">
       <div>
-        <div className="flex flex-wrap items-center gap-3 justify-between pb-5 mb-6 border-b border-line">
-          <h2 className="h-card text-2xl">
-            {query?.trim()
-              ? `Results for "${query.trim()}"`
-              : cat === "all" ? "All Products" : SECTIONS.find((s) => s.id === cat)?.name}
-            <span className="ml-2 text-sm font-sans text-muted">({filtered.length})</span>
+        <div className="pb-6 mb-6 border-b border-line space-y-5">
+          <h2 className="h-card text-2xl flex items-center justify-between">
+            <span>
+              {query?.trim()
+                ? `Results for "${query.trim()}"`
+                : cat === "all" ? "All Products" : SECTIONS.find((s) => s.id === cat)?.name}
+              <span className="ml-2 text-sm font-sans text-muted">({filtered.length})</span>
+            </span>
           </h2>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setSheet(true)} className="lg:hidden btn btn-sm btn-white">
-              <SlidersHorizontal className="w-4 h-4" /> Filters
-            </button>
-            <label className="flex items-center gap-2 text-sm text-muted">
-              <span className="hidden sm:inline">Sort by:</span>
+
+          <div className="flex flex-wrap items-center gap-4 bg-bg-soft p-2 sm:p-3 rounded-xl border border-line justify-between">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-5">
+              {/* Category Pills */}
+              {SECTIONS.length > 1 && (
+                <div className="flex flex-wrap items-center gap-1 p-1 bg-white border border-line-strong rounded-lg shadow-sm">
+                  <button
+                    onClick={() => { setCat("all"); setLimit(PAGE); }}
+                    className={cn("px-3 py-1.5 text-sm font-bold rounded-md whitespace-nowrap transition-colors", cat === "all" ? "bg-accent text-white shadow-sm" : "text-ink-soft hover:text-ink hover:bg-bg-soft")}
+                  >
+                    All Products
+                  </button>
+                  {SECTIONS.map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => { setCat(s.id); setLimit(PAGE); }}
+                      className={cn("px-3 py-1.5 text-sm font-bold rounded-md whitespace-nowrap transition-colors", cat === s.id ? "bg-accent text-white shadow-sm" : "text-ink-soft hover:text-ink hover:bg-bg-soft")}
+                    >
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Price Filter */}
+              <div className="flex items-center gap-2 shrink-0 bg-white border border-line-strong rounded-lg p-1 shadow-sm">
+                <span className="text-sm font-bold text-ink-soft pl-2 hidden sm:inline-block">Price:</span>
+                <input value={min} onChange={(e) => { setMin(e.target.value.replace(/\D/g, "")); setLimit(PAGE); }} inputMode="numeric" placeholder="Min ₹"
+                  className="w-16 h-8 text-sm px-2 text-center font-medium outline-none bg-transparent placeholder:text-muted" />
+                <span className="text-muted">–</span>
+                <input value={max} onChange={(e) => { setMax(e.target.value.replace(/\D/g, "")); setLimit(PAGE); }} inputMode="numeric" placeholder="Max ₹"
+                  className="w-16 h-8 text-sm px-2 text-center font-medium outline-none bg-transparent placeholder:text-muted" />
+              </div>
+
+              {/* Clear Filters */}
+              {(min || max) && (
+                <button onClick={() => { setMin(""); setMax(""); setLimit(PAGE); }} className="text-sm font-bold text-coral hover:text-coral-dark transition-colors shrink-0">
+                  Clear price
+                </button>
+              )}
+            </div>
+
+            {/* Sort By */}
+            <label className="flex items-center gap-2 text-sm text-muted shrink-0 bg-white border border-line-strong rounded-lg p-1 pl-3 shadow-sm ml-auto">
+              <span className="hidden sm:inline font-bold text-ink-soft">Sort by:</span>
               <span className="relative">
                 <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}
-                  className="field h-10 w-auto appearance-none pl-3 pr-8 text-sm font-semibold cursor-pointer">
+                  className="h-8 w-auto appearance-none pl-1 pr-7 text-sm font-bold text-ink cursor-pointer outline-none bg-transparent">
                   <option value="featured">Newest</option>
                   <option value="price-asc">Price: Low to High</option>
                   <option value="price-desc">Price: High to Low</option>
                   <option value="rating">Top rated</option>
                 </select>
-                <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-muted text-xs">▾</span>
+                <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-muted text-xs">▾</span>
               </span>
             </label>
           </div>
@@ -140,43 +144,6 @@ export default function ShopBrowser({
         )}
       </div>
 
-      {/* mobile filter sheet */}
-      <AnimatePresence>
-        {sheet && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={() => setSheet(false)} className="fixed inset-0 z-[60] bg-ink/30 backdrop-blur-[2px] lg:hidden" />
-            <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed inset-x-0 bottom-0 z-[61] max-h-[82vh] overflow-y-auto rounded-t-[22px] border-t border-x border-line bg-page p-6 lg:hidden">
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="h-card text-xl">Filters</h3>
-                <button onClick={() => setSheet(false)} className="grid place-items-center w-9 h-9 rounded-lg border border-line-strong bg-white transition-colors hover:bg-bg-soft"><X className="w-5 h-5" /></button>
-              </div>
-              {Sidebar}
-              <button onClick={() => setSheet(false)} className="mt-6 btn btn-accent btn-block">
-                Show {filtered.length} results
-              </button>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </div>
-  );
-}
-
-function CatItem({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <li>
-      <button
-        onClick={onClick}
-        className={cn(
-          "text-left text-sm py-1 transition-colors",
-          active ? "text-ink font-bold" : "text-ink-soft hover:text-ink"
-        )}
-      >
-        {children}
-      </button>
-    </li>
   );
 }
